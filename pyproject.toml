@@ -1,0 +1,23 @@
+[build-system]
+requires = [
+    "setuptools>=42",
+    "wheel",
+    "cmake>=3.18",
+    "scikit-build>=0.13",
+]
+build-backend = "setuptools.build_meta"
+
+
+[tool.cibuildwheel]
+archs = ["auto64"]  # 64-bit only
+build = "cp310-*"  # Only build Python 3.10 wheels
+skip = "pp* *musllinux*"  # disable PyPy and musl-based wheels
+# test-requires = "pytest"
+# test-command = "pytest {project}/tests"
+
+[tool.cibuildwheel.macos]
+# https://cibuildwheel.readthedocs.io/en/stable/faq/#apple-silicon
+archs = ["x86_64", "universal2"]
+test-skip = ["*_arm64", "*_universal2:arm64"]
+test-skip = ["*"]
+
