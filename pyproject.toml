@@ -15,4 +15,4 @@ build = "cp310-*"  # Only build Python 3.10 wheels
 skip = ["pp*", "*musllinux*"]  # disable PyPy and musl-based wheels
 
 [tool.cibuildwheel.linux]
-before-all = "yum update && yum install opencv-devel eigen3-devel"
+before-all = "yum update && yum install opencv-devel eigen3-devel -y"
