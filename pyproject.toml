@@ -12,5 +12,7 @@ build-backend = "setuptools.build_meta"
 archs = ["auto64"]  # 64-bit only
 build = "cp310-*"  # Only build Python 3.10 wheels
 skip = ["pp*, *musllinux*"]  # disable PyPy and musl-based wheels
+CIBW_ENVIRONMENT = "CMAKE_GENERATOR=Ninja"  # Use Ninja as the CMake generator
+
 # test-requires = "pytest"
 # test-command = "pytest {project}/tests"
