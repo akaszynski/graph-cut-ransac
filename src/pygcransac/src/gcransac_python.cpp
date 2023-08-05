@@ -11,25 +11,11 @@
 
 #include "samplers/uniform_sampler.h"
 #include "samplers/prosac_sampler.h"
-// #include "samplers/napsac_sampler.h"
-// #include "samplers/progressive_napsac_sampler.h"
-// #include "samplers/importance_sampler.h"
-// #include "samplers/adaptive_reordering_sampler.h"
 
-#include "estimators/fundamental_estimator.h"
-#include "estimators/homography_estimator.h"
 #include "estimators/homography_affine_correspondence_estimator.h"
-#include "estimators/essential_estimator.h"
-
-#include "preemption/preemption_sprt.h"
 
 #include "inlier_selectors/empty_inlier_selector.h"
 #include "inlier_selectors/space_partitioning_ransac.h"
-
-#include "estimators/solver_fundamental_matrix_seven_point.h"
-#include "estimators/solver_fundamental_matrix_eight_point.h"
-#include "estimators/solver_homography_four_point.h"
-#include "estimators/solver_essential_matrix_five_point_stewenius.h"
 
 #include <ctime>
 #include <sys/types.h>
@@ -174,33 +160,6 @@ int findRigidTransform_(
 		main_sampler = std::unique_ptr<AbstractSampler>(new sampler::UniformSampler(&points));
 	else if (sampler_id == 1)  // Initializing a PROSAC sampler. This requires the points to be ordered according to the quality.
 		main_sampler = std::unique_ptr<AbstractSampler>(new sampler::ProsacSampler(&points, estimator.sampleSize()));
-	else if (sampler_id == 2)  // Initializing a NAPSAC sampler. This requires the points to be ordered according to the quality.
-	{
-		if (neighborhood_id != 1 ||
-			neighborhood_size <= std::numeric_limits<double>::epsilon())
-		{
-			fprintf(stderr, "For NAPSAC sampler, the neighborhood type must be 1 and its size >0.\n");
-			return 0;
-		}
-
-		main_sampler = std::unique_ptr<AbstractSampler>(new sampler::NapsacSampler<neighborhood::FlannNeighborhoodGraph>(
-			&points, dynamic_cast<neighborhood::FlannNeighborhoodGraph *>(neighborhood_graph.get())));
-	} else if (sampler_id == 3) // Initializing the importance sampler
-		main_sampler = std::unique_ptr<AbstractSampler>(new gcransac::sampler::ImportanceSampler(&points,
-            point_probabilities,
-            estimator.sampleSize()));
-	else if (sampler_id == 4) // Initializing the adaptive re-ordering sampler
-    {
-        double max_prob = 0;
-        for (const auto &prob : point_probabilities)
-            max_prob = MAX(max_prob, prob);
-        for (auto &prob : point_probabilities)
-            prob /= max_prob;
-		main_sampler = std::unique_ptr<AbstractSampler>(new gcransac::sampler::AdaptiveReorderingSampler(&points,
-            point_probabilities,
-            estimator.sampleSize(),
-            sampler_variance));
-	}
 	else
 	{
 		AbstractNeighborhood *neighborhood_graph_ptr = neighborhood_graph.release();
