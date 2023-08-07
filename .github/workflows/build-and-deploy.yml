@@ -23,21 +23,28 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Setup MSVC enviornment
-        if: matrix.os == 'windows-latest'
+      - name: Cache OpenCV build
+        id: cache-opencv
+        uses: actions/cache@v3
+        with:
+          path: C:/opencv
+          key: opencv-${{ runner.os }}-${{ hashFiles('scripts/build-opencv.ps1') }}
+
+      - name: Setup MSVC environment
+        if: matrix.os == 'windows-latest' && steps.cache-opencv.outputs.cache-hit != 'true'
         uses: ilammy/msvc-dev-cmd@v1
 
       - name: Build OpenCV on Windows
-        if: matrix.os == 'windows-latest'
+        if: matrix.os == 'windows-latest' && steps.cache-opencv.outputs.cache-hit != 'true'
         run: scripts/build-opencv.ps1
         shell: pwsh
 
-      - name: Build wheels
-        uses: pypa/cibuildwheel@v2.14.1
-        env:
-          CIBW_ENVIRONMENT_WINDOWS: 'OpenCV_DIR="C:/opencv/build"'
-          CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: "delvewheel repair -w {dest_dir} {wheel} --add-path C:/opencv/build/bin"
+      # - name: Build wheels
+      #   uses: pypa/cibuildwheel@v2.14.1
+      #   env:
+      #     CIBW_ENVIRONMENT_WINDOWS: 'OpenCV_DIR="C:/opencv/"'
+      #     CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: "delvewheel repair -w {dest_dir} {wheel} --add-path C:/opencv/bin"
 
-      - uses: actions/upload-artifact@v3
-        with:
-          path: ./wheelhouse/*.whl
+      # - uses: actions/upload-artifact@v3
+      #   with:
+      #     path: ./wheelhouse/*.whl
