@@ -24,6 +24,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Cache OpenCV build
+        if: matrix.os == 'windows-latest'
         id: cache-opencv
         uses: actions/cache@v3
         with:
@@ -39,12 +40,12 @@ jobs:
         run: scripts/build-opencv.ps1
         shell: pwsh
 
-      # - name: Build wheels
-      #   uses: pypa/cibuildwheel@v2.14.1
-      #   env:
-      #     CIBW_ENVIRONMENT_WINDOWS: 'OpenCV_DIR="C:/opencv/"'
-      #     CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: "delvewheel repair -w {dest_dir} {wheel} --add-path C:/opencv/bin"
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v2.14.1
+        env:
+          CIBW_ENVIRONMENT_WINDOWS: 'OpenCV_DIR="C:/opencv/"'
+          CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: "delvewheel repair -w {dest_dir} {wheel} --add-path C:/opencv/bin"
 
-      # - uses: actions/upload-artifact@v3
-      #   with:
-      #     path: ./wheelhouse/*.whl
+      - uses: actions/upload-artifact@v3
+        with:
+          path: ./wheelhouse/*.whl
