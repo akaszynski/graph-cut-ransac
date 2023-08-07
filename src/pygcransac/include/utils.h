@@ -45,6 +45,7 @@
 #include "types.h"
 #include "statistics.h"
 
+
 namespace gcransac
 {
 	namespace utils
