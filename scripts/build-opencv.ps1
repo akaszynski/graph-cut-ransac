@@ -95,7 +95,4 @@ cmake -G Ninja `
     -D BUILD_opencv_core:BOOL=ON `
     -D BUILD_opencv_flann:BOOL=ON ..
 
-ninja
-
-# optionally install
-# ninja install
+ninja install
