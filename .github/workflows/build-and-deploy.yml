@@ -23,6 +23,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+
+      - name: Setup MSVC environment
+        if: matrix.os == 'windows-latest'
+        uses: ilammy/msvc-dev-cmd@v1
+
       - name: Cache OpenCV build
         if: matrix.os == 'windows-latest'
         id: cache-opencv
@@ -30,10 +35,6 @@ jobs:
         with:
           path: C:/opencv
           key: opencv-${{ runner.os }}-${{ hashFiles('scripts/build-opencv.ps1') }}
-
-      - name: Setup MSVC environment
-        if: matrix.os == 'windows-latest' && steps.cache-opencv.outputs.cache-hit != 'true'
-        uses: ilammy/msvc-dev-cmd@v1
 
       - name: Build OpenCV on Windows
         if: matrix.os == 'windows-latest' && steps.cache-opencv.outputs.cache-hit != 'true'
