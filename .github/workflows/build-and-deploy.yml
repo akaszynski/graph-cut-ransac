@@ -41,10 +41,27 @@ jobs:
         run: scripts/build-opencv.ps1
         shell: pwsh
 
+      - name: Cache Eigen3 build
+        if: matrix.os == 'windows-latest'
+        id: cache-eigen3
+        uses: actions/cache@v3
+        with:
+          path: C:/eigen3
+          key: opencv-${{ runner.os }}-${{ hashFiles('scripts/build-eigen3.ps1') }}
+
+      - name: Install ninja on Windows
+      - uses: seanmiddleditch/gha-setup-ninja@3
+        if: matrix.os == 'windows-latest' && steps.cache-eigen3.outputs.cache-hit != 'true'
+
+      - name: Build Eigen3 on Windows
+        if: matrix.os == 'windows-latest' && steps.cache-eigen3.outputs.cache-hit != 'true'
+        run: scripts/build-eigen3.ps1
+        shell: pwsh
+
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.14.1
         env:
-          CIBW_ENVIRONMENT_WINDOWS: 'OpenCV_DIR="C:/opencv/"'
+          CIBW_ENVIRONMENT_WINDOWS: 'OpenCV_DIR="C:/opencv/" Eigen3_DIR="C:/eigen3"'
           CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: "delvewheel repair -w {dest_dir} {wheel} --add-path C:/opencv/bin"
 
       - uses: actions/upload-artifact@v3
