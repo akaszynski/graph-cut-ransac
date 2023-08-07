@@ -1,4 +1,4 @@
-#! /usr/bin/env python3
+"""Setup for pygcransac."""
 import os
 import re
 import sys
@@ -26,7 +26,7 @@ cmake_args += ['-DCMAKE_BUILD_TYPE=' + cfg]
 
 setup(
     name='pygcransac',
-    version='0.1',
+    version='0.1.0',
     author='Daniel Barath, Dmytro Mishkin',
     author_email='barath.daniel@sztaki.mta.hu',
     description='Graph-Cut RANSAC',
@@ -38,4 +38,5 @@ setup(
     cmake_args=cmake_args,
     cmake_install_dir="src/pygcransac",
     cmake_install_target='install',
+    install_requires="numpy",
 )
