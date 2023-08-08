@@ -22,6 +22,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
 
       - name: Setup MSVC Developer Command Prompt
         if: matrix.os == 'windows-latest'
