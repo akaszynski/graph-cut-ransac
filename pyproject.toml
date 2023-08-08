@@ -24,7 +24,6 @@ test-command = "pytest {project}/tests"
 # Use delvewheel on windows
 before-build = "pip install delvewheel"
 
-# repair-wheel-command = "delvewheel repair -w {dest_dir} {wheel} --add_path "
-
-# CIBW_ENVIRONMENT_WINDOWS "OpenCV_DIR='C:/Users/Alex/source/opencv/build'"
-# CIBW_REPAIR_WHEEL_COMMAND_WINDOWS "delvewheel repair -w {dest_dir} {wheel} --add-path C:/Users/Alex/source/opencv/build/bin"
+# manually specify the following:
+# CIBW_ENVIRONMENT_WINDOWS "OpenCV_DIR='<PATH>/opencv/build'"
+# CIBW_REPAIR_WHEEL_COMMAND_WINDOWS "delvewheel repair -w {dest_dir} {wheel} --add-path <PATH>/opencv/build/bin"

@@ -23,10 +23,14 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Check MSVC Version
+        if: runner.os == 'Windows'
+        run: |
+          cl.exe
 
-      - name: Setup MSVC environment
-        if: matrix.os == 'windows-latest'
-        uses: ilammy/msvc-dev-cmd@v1
+      # - name: Setup MSVC environment
+      #   if: matrix.os == 'windows-latest'
+      #   uses: ilammy/msvc-dev-cmd@v1
 
       - name: Cache OpenCV build
         if: matrix.os == 'windows-latest'
@@ -34,25 +38,30 @@ jobs:
         uses: actions/cache@v3
         with:
           path: C:/opencv
-          key: opencv-${{ runner.os }}-${{ hashFiles('scripts/build-opencv.ps1') }}
+          key: opencv3-${{ runner.os }}-${{ hashFiles('scripts/build-opencv.ps1') }}
 
       - name: Build OpenCV on Windows
         if: matrix.os == 'windows-latest' && steps.cache-opencv.outputs.cache-hit != 'true'
         run: scripts/build-opencv.ps1
         shell: pwsh
 
-      - name: Install Eigen v3.4.0 on Windows
+      - name: Cache Eigen3 build
         if: matrix.os == 'windows-latest'
-        run: |
-          Invoke-WebRequest -Uri https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.zip -OutFile eigen-3.4.0.zip
-          Expand-Archive -Path eigen-3.4.0.zip -DestinationPath .
-          Move-Item -Path eigen-3.4.0\Eigen -Destination C:\eigen3
+        id: cache-eigen3
+        uses: actions/cache@v3
+        with:
+          path: C:/eigen3
+          key: opencv-${{ runner.os }}-${{ hashFiles('scripts/build-eigen3.ps1') }}
+
+      - name: Install Eigen3 on Windows
+        if: matrix.os == 'windows-latest' && steps.cache-eigen3.outputs.cache-hit != 'true'
+        run: scripts/build-eigen3.ps1
         shell: pwsh
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.14.1
         env:
-          CIBW_ENVIRONMENT_WINDOWS: 'OpenCV_DIR="C:/opencv/" Eigen3_DIR="C:/eigen3"'
+          CIBW_ENVIRONMENT_WINDOWS: 'OpenCV_DIR="C:/opencv" Eigen3_DIR="C:/eigen3"'
           CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: "delvewheel repair -w {dest_dir} {wheel} --add-path C:/opencv/bin"
 
       - uses: actions/upload-artifact@v3
