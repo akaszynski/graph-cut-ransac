@@ -30,11 +30,6 @@ jobs:
           arch: x64
           toolset: 14.36.32532
 
-      - name: Check MSVC Version
-        if: runner.os == 'Windows'
-        run: |
-          cl.exe /?
-
       - name: Cache OpenCV build
         if: matrix.os == 'windows-latest'
         id: cache-opencv

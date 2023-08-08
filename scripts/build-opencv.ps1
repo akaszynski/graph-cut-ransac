@@ -95,4 +95,8 @@ cmake -G Ninja `
     -D BUILD_opencv_core:BOOL=ON `
     -D BUILD_opencv_flann:BOOL=ON ..
 
-ninja install
+ninja
+
+# cibuildwheel won't work with the installed directory, only the "build" directory
+cd ..
+mv .\build C:\opencv\
