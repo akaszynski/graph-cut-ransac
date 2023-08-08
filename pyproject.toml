@@ -23,6 +23,9 @@ test-command = "pytest {project}/tests"
 # Use delvewheel on windows
 before-build = "pip install delvewheel"
 
-# manually specify the following, replacing path with the location of opencv
-# CIBW_ENVIRONMENT_WINDOWS "OpenCV_DIR='<PATH>/opencv'"
+# If building windows independently, manually specify the following enviornment variables:
+# CIBW_ENVIRONMENT_WINDOWS "OpenCV_DIR='<PATH>/opencv' Eigen3_DIR="<EIGEN-PATH>/eigen3"'"
 # CIBW_REPAIR_WHEEL_COMMAND_WINDOWS "delvewheel repair -w {dest_dir} {wheel} --add-path <PATH>/opencv/build/bin"
+
+# replacing PATH with the directory that contains the build of opencv and
+# EIGEN-PATH with the location that contains the build of eigen3

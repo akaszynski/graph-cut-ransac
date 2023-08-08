@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.8)
 project(GraphCutRANSAC LANGUAGES CXX)
 
 # indicate if OPENMP should be enabled
-option(CREATE_SAMPLE_PROJECT "Create the Sample Project" OFF)
+option(CREATE_SAMPLE_PROJECT "Create the Sample Project" ON)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)

@@ -1,18 +1,9 @@
 """Setup for pygcransac."""
-import os
-import re
 import sys
-import sysconfig
-import platform
-import subprocess
 
-from distutils.version import LooseVersion
-from setuptools import setup, Extension, find_packages
-from setuptools.command.build_ext import build_ext
+from setuptools import setup, find_packages
 from setuptools.command.test import test as TestCommand
-from shutil import copyfile, copymode
 
-# From: https://github.com/YannickJadoul/Parselmouth/blob/fdd5414b0eda2802ad9fe046bb80a8f1ad10a2e4/setup.py#L24C1-L28C7
 try:
     from skbuild import setup
 except ImportError:
@@ -23,6 +14,7 @@ cmake_args = []
 debug = False
 cfg = 'Debug' if debug else 'Release'
 cmake_args += ['-DCMAKE_BUILD_TYPE=' + cfg]
+cmake_args += ['-DCREATE_SAMPLE_PROJECT=OFF']  # <-- Disable the sample project
 
 setup(
     name='pygcransac',
