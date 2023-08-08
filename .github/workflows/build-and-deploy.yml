@@ -35,7 +35,7 @@ jobs:
         id: cache-opencv
         uses: actions/cache@v3
         with:
-          path: C:/opencv
+          path: D:/a/graph-cut-ransac/graph-cut-ransac/opencv/build
           key: opencv3-${{ runner.os }}-${{ hashFiles('scripts/build-opencv.ps1') }}
 
       - name: Build OpenCV on Windows
@@ -59,7 +59,7 @@ jobs:
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.14.1
         env:
-          CIBW_ENVIRONMENT_WINDOWS: 'OpenCV_DIR="C:/opencv" Eigen3_DIR="C:/eigen3"'
+          CIBW_ENVIRONMENT_WINDOWS: 'OpenCV_DIR="D:/a/graph-cut-ransac/graph-cut-ransac/opencv/build" Eigen3_DIR="C:/eigen3"'
           CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: "delvewheel repair -w {dest_dir} {wheel} --add-path C:/opencv/bin"
 
       - uses: actions/upload-artifact@v3
