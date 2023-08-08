@@ -35,8 +35,8 @@ jobs:
         id: cache-opencv
         uses: actions/cache@v3
         with:
-          path: D:/a/graph-cut-ransac/graph-cut-ransac/opencv/build
-          key: opencv3-${{ runner.os }}-${{ hashFiles('scripts/build-opencv.ps1') }}
+          path: D:/a/graph-cut-ransac/graph-cut-ransac/opencv
+          key: opencv3-4-5-${{ runner.os }}-${{ hashFiles('scripts/build-opencv.ps1') }}
 
       - name: Build OpenCV on Windows
         if: matrix.os == 'windows-latest' && steps.cache-opencv.outputs.cache-hit != 'true'
