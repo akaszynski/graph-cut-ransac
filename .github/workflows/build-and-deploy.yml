@@ -64,4 +64,5 @@ jobs:
 
       - uses: actions/upload-artifact@v3
         with:
+          name: pygcransac-wheels-${{ runner.os }}
           path: ./wheelhouse/*.whl
