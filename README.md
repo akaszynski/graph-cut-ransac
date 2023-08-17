@@ -18,7 +18,7 @@ Experiments on homography, fundamental matrix, essential matrix, and 6D pose est
 There are pre-compiled wheels for Windows and Linux for Python 3.8 - 3.11 that you can install with:
 
 ```
-pip install magsac
+pip install pygcransac
 ```
 
 # Installation C++
