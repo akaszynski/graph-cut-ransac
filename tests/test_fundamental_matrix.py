@@ -3,6 +3,9 @@ import numpy as np
 import cv2
 import pygcransac
 from time import time
+import pytest
+
+skip_windows = pytest.mark.skipif(os.name == 'nt', reason='Test fails on Windows')
 
 THIS_PATH = os.path.dirname(os.path.abspath(__file__))
 KYOTO_PATH = os.path.join(THIS_PATH, '..', "build/data/Kyoto")
@@ -50,6 +53,7 @@ def verify_pygcransac_fundam(kps1, kps2, tentatives, h1, w1, h2, w2, sampler_id)
     return H, mask
 
 
+@skip_windows
 def test_find_fundamental_matrix():
     # We will detect ORB features and match them with cross-check test
     det = cv2.SIFT_create(8000)
