@@ -5,7 +5,7 @@ import pygcransac
 from time import time
 
 THIS_PATH = os.path.dirname(os.path.abspath(__file__))
-KYOTO_PATH = "/home/alex/source/graph-cut-ransac/build/data/Kyoto"
+KYOTO_PATH = os.path.join(THIS_PATH, '..', "data/Kyoto")
 img1 = cv2.cvtColor(
     cv2.imread(os.path.join(KYOTO_PATH, "Kyoto1.jpg")), cv2.COLOR_BGR2RGB
 )
