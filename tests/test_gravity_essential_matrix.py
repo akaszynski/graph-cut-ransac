@@ -1,7 +1,7 @@
 import os
 import numpy as np
 import cv2
-import pgcyransac
+import pygcransac
 
 K = np.array([[718.856, 0.0, 607.1928], [0.0, 718.856, 185.2157], [0.0, 0.0, 1.0]])
 
